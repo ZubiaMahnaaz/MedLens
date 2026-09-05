@@ -38,6 +38,7 @@ export function DualPaneReviewView({
   // Left Pane viewer state
   const [viewMode, setViewMode] = useState('formatted'); // 'formatted' | 'raw_text'
   const [zoomLevel, setZoomLevel] = useState(100);
+  const [mobileActivePane, setMobileActivePane] = useState('table'); // 'table' | 'document'
 
   // Edit row state
   const [editingId, setEditingId] = useState(null);
@@ -181,9 +182,9 @@ export function DualPaneReviewView({
   const isSampleReport = results.some(r => r.provenance === 'SAMPLE_DATA');
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: 'calc(100vh - 120px)' }}>
+    <div className="dual-pane-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: 'calc(100vh - 120px)' }}>
       {/* Top Action Header */}
-      <div style={{
+      <div className="review-action-header" style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -195,7 +196,7 @@ export function DualPaneReviewView({
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <h2 style={{ fontSize: '1.2rem', color: 'var(--text-primary)' }}>{report.title}</h2>
               {isSampleReport && (
                 <span className="prov-tag prov-sample">🧪 Sample / Demo Panel</span>
@@ -208,7 +209,7 @@ export function DualPaneReviewView({
                 <span className="badge badge-low">Pending Human Verification</span>
               )}
             </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', gap: '12px', marginTop: '2px' }}>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', gap: '12px', marginTop: '2px', flexWrap: 'wrap' }}>
               <span><strong>Patient:</strong> {patient?.name} ({patient?.identifier})</span>
               <span>•</span>
               <span><strong>Facility:</strong> {report.lab_name}</span>
@@ -218,7 +219,7 @@ export function DualPaneReviewView({
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="review-action-btn-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
             className="btn btn-outline btn-sm"
             onClick={() => setIsAddingRow(true)}
@@ -305,10 +306,29 @@ export function DualPaneReviewView({
         </div>
       )}
 
+      {/* Mobile Pane Switcher (Visible on small screens) */}
+      <div className="dual-pane-mobile-switcher">
+        <button
+          className={`btn btn-sm ${mobileActivePane === 'table' ? 'btn-primary' : 'btn-outline'}`}
+          style={{ flex: 1 }}
+          onClick={() => setMobileActivePane('table')}
+        >
+          <ShieldCheck size={14} /> Structured Table ({results.length})
+        </button>
+        <button
+          className={`btn btn-sm ${mobileActivePane === 'document' ? 'btn-primary' : 'btn-outline'}`}
+          style={{ flex: 1 }}
+          onClick={() => setMobileActivePane('document')}
+        >
+          <FileText size={14} /> Source Document
+        </button>
+      </div>
+
       {/* Dual Pane Main Area */}
-      <div style={{ display: 'grid', gridTemplateColumns: '42% 58%', gap: '16px', flex: 1, minHeight: 0 }}>
+      <div className={`dual-pane-grid show-${mobileActivePane}`} style={{ display: 'grid', gridTemplateColumns: '42% 58%', gap: '16px', flex: 1, minHeight: 0 }}>
         {/* LEFT PANE: Original Source Report Document Viewer */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: '0', overflow: 'hidden' }}>
+        <div className="card dual-pane-left-card" style={{ display: 'flex', flexDirection: 'column', padding: '0', overflow: 'hidden' }}>
+
           {/* Document Header Controls */}
           <div style={{
             padding: '10px 16px',
@@ -390,7 +410,8 @@ export function DualPaneReviewView({
         </div>
 
         {/* RIGHT PANE: Structured Editable Review Table */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
+        <div className="card dual-pane-right-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
+
           {/* Table Stats Bar */}
           <div style={{
             padding: '10px 16px',

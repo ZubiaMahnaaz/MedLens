@@ -37,7 +37,7 @@ export function DashboardView({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Top Banner & Quick Hero */}
-      <div style={{
+      <div className="dashboard-hero-banner" style={{
         background: 'linear-gradient(135deg, rgba(0, 210, 180, 0.12) 0%, rgba(2, 132, 199, 0.12) 100%)',
         border: '1px solid var(--border-highlight)',
         borderRadius: 'var(--radius-xl)',
@@ -60,7 +60,7 @@ export function DashboardView({
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="hero-button-group" style={{ display: 'flex', gap: '12px' }}>
           <button className="btn btn-primary" onClick={onOpenUpload}>
             <Upload size={16} /> Upload Lab Report
           </button>
@@ -71,7 +71,7 @@ export function DashboardView({
       </div>
 
       {/* KPI Stats Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '16px' }}>
+      <div className="dashboard-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '16px' }}>
         {/* Stat 1: Total Patients */}
         <div className="card" style={{ cursor: 'pointer' }} onClick={() => onNavigate('patients')}>
           <div className="card-header">
@@ -138,7 +138,8 @@ export function DashboardView({
       </div>
 
       {/* Main Content Grid: Patients Table & Recent Audit Trail */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+      <div className="dashboard-main-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+
         {/* Left Column: Quick Patient Directory */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
           <div className="card-header">

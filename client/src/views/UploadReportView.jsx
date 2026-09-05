@@ -153,7 +153,8 @@ export function UploadReportView({
       )}
 
       {/* Main Upload Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px' }}>
+      <div className="upload-main-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px' }}>
+
         {/* Left Column: Ingestion Options */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Target Patient Selector */}

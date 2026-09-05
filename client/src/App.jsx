@@ -30,8 +30,12 @@ export default function App() {
   const [editPatientData, setEditPatientData] = useState(null);
   const [conflictModalData, setConflictModalData] = useState(null);
 
+  // Mobile Navigation Drawer State
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   // Search
   const [searchQuery, setSearchQuery] = useState('');
+
 
   // Initial Data Load
   const loadInitialData = async () => {
@@ -229,6 +233,8 @@ export default function App() {
         pendingCount={pendingCount}
         selectedPatient={selectedPatient}
         hasActiveReport={Boolean(selectedReportId)}
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
       {/* Main Container */}
@@ -246,7 +252,10 @@ export default function App() {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           pendingReviewCount={pendingCount}
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
         />
+
 
         {/* Content Body based on active view */}
         <main className="content-body">

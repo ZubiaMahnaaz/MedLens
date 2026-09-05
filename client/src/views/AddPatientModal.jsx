@@ -124,7 +124,7 @@ export function AddPatientModal({ isOpen, onClose, onSave, editPatient = null })
             )}
 
             {/* Row 1: Name & Identifier */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '14px' }}>
+            <div className="modal-form-grid-2" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '14px' }}>
               <div className="form-group" style={{ margin: 0 }}>
                 <label className="form-label">Patient Full Name *</label>
                 <input
@@ -149,7 +149,7 @@ export function AddPatientModal({ isOpen, onClose, onSave, editPatient = null })
             </div>
 
             {/* Row 2: DOB & Sex */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+            <div className="modal-form-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
               <div className="form-group" style={{ margin: 0 }}>
                 <label className="form-label">Date of Birth *</label>
                 <input
@@ -169,6 +169,7 @@ export function AddPatientModal({ isOpen, onClose, onSave, editPatient = null })
                 </select>
               </div>
             </div>
+
 
             {/* Symptoms Tags */}
             <div className="form-group" style={{ margin: 0 }}>
@@ -262,7 +263,8 @@ export function AddPatientModal({ isOpen, onClose, onSave, editPatient = null })
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {medications.map((med, i) => (
-                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 2fr auto', gap: '8px', alignItems: 'center' }}>
+                  <div key={i} className="med-input-row" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 2fr auto', gap: '8px', alignItems: 'center' }}>
+
                     <input
                       type="text"
                       className="form-input"

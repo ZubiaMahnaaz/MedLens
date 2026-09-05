@@ -56,13 +56,13 @@ export function PatientProfileView({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Patient Header Banner */}
-      <div className="card" style={{
+      <div className="card profile-hero-banner" style={{
         background: 'linear-gradient(135deg, var(--bg-card) 0%, rgba(0, 210, 180, 0.06) 100%)',
         border: '1px solid var(--border-color)',
         padding: '24px'
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-          <div style={{ display: 'flex', gap: '18px', alignItems: 'center' }}>
+          <div className="profile-hero-identity" style={{ display: 'flex', gap: '18px', alignItems: 'center', flexWrap: 'wrap' }}>
             <div style={{
               width: '64px',
               height: '64px',
@@ -74,13 +74,14 @@ export function PatientProfileView({
               fontWeight: '800',
               fontSize: '1.5rem',
               color: '#090e1a',
-              boxShadow: '0 4px 15px var(--primary-glow)'
+              boxShadow: '0 4px 15px var(--primary-glow)',
+              flexShrink: 0
             }}>
               {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
             </div>
 
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                 <h2 style={{ fontSize: '1.6rem', color: 'var(--text-primary)' }}>{patient.name}</h2>
                 <span style={{ fontSize: '0.82rem', padding: '3px 8px', background: 'var(--bg-input)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>
                   {patient.identifier}
@@ -100,7 +101,7 @@ export function PatientProfileView({
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div className="profile-hero-actions" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             <button className="btn btn-secondary btn-sm" onClick={onOpenEdit}>
               <Edit2 size={14} /> Edit Dossier
             </button>
@@ -116,7 +117,7 @@ export function PatientProfileView({
         </div>
 
         {/* Tab Navigation */}
-        <div style={{ display: 'flex', gap: '12px', borderTop: '1px solid var(--border-color)', marginTop: '20px', paddingTop: '16px' }}>
+        <div className="profile-tab-nav" style={{ display: 'flex', gap: '12px', borderTop: '1px solid var(--border-color)', marginTop: '20px', paddingTop: '16px', flexWrap: 'wrap' }}>
           <button
             className={`btn btn-sm ${activeTab === 'dossier' ? 'btn-primary' : 'btn-outline'}`}
             onClick={() => setActiveTab('dossier')}
@@ -134,7 +135,8 @@ export function PatientProfileView({
 
       {/* Tab Content 1: Dossier & Diagnostic Reports */}
       {activeTab === 'dossier' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.8fr', gap: '20px' }}>
+        <div className="profile-dossier-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.8fr', gap: '20px' }}>
+
           {/* Left Column: Patient Baseline Info */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Allergies Warning Card */}

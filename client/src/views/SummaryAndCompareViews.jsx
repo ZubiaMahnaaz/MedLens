@@ -109,7 +109,7 @@ export function AISummaryView({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '1000px', margin: '0 auto' }}>
       {/* Top Banner */}
-      <div className="card" style={{
+      <div className="card summary-hero-banner" style={{
         background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(2, 132, 199, 0.12) 100%)',
         border: '1px solid rgba(168, 85, 247, 0.3)',
         padding: '24px'
@@ -120,7 +120,7 @@ export function AISummaryView({
               <Sparkles size={14} /> PATIENT-FRIENDLY CLINICAL SUMMARY
             </div>
             <h2 style={{ fontSize: '1.5rem', color: 'var(--text-primary)' }}>{report.title}</h2>
-            <div style={{ display: 'flex', gap: '12px', fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+            <div style={{ display: 'flex', gap: '12px', fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '4px', flexWrap: 'wrap' }}>
               <span><strong>Patient:</strong> {patient?.name}</span>
               <span>•</span>
               <span><strong>MRN:</strong> {patient?.identifier}</span>
@@ -129,7 +129,7 @@ export function AISummaryView({
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="summary-btn-group" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <button className="btn btn-secondary btn-sm" onClick={() => onNavigateToReview(report.id)}>
               <FileText size={14} /> View Source Review
             </button>
@@ -143,6 +143,7 @@ export function AISummaryView({
         </div>
       </div>
 
+
       {savedMsg && (
         <div style={{ padding: '10px 16px', background: 'var(--status-normal-bg)', color: 'var(--status-normal)', border: '1px solid var(--status-normal-border)', borderRadius: 'var(--radius-md)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Check size={16} />
@@ -151,7 +152,7 @@ export function AISummaryView({
       )}
 
       {/* Metrics Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+      <div className="summary-metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px' }}>
         <div className="card" style={{ textAlign: 'center', padding: '16px' }}>
           <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: '600' }}>Total Evaluated Tests</div>
           <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-primary)', marginTop: '4px' }}>
@@ -212,7 +213,7 @@ export function AISummaryView({
       </div>
 
       {/* Out of Range vs Normal Parameters Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+      <div className="summary-details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         {/* Out of Range Parameters */}
         <div className="card">
           <div className="card-title" style={{ fontSize: '1rem', color: outOfRangeResults.length > 0 ? 'var(--status-high)' : 'var(--status-normal)', marginBottom: '12px' }}>
@@ -339,7 +340,8 @@ export function ReportCompareView({
       </div>
 
       {/* Selectors Bar */}
-      <div className="card" style={{ padding: '16px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '16px', alignItems: 'flex-end' }}>
+      <div className="card compare-selectors-grid" style={{ padding: '16px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '16px', alignItems: 'flex-end' }}>
+
         <div>
           <label className="form-label">Report A (Previous Baseline)</label>
           <select className="form-select" value={report1Id} onChange={(e) => setReport1Id(e.target.value)}>
@@ -383,7 +385,7 @@ export function ReportCompareView({
       {comparisonData && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Summary Metric Chips */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px' }}>
+          <div className="compare-metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '14px' }}>
             <div className="card" style={{ textAlign: 'center', padding: '14px' }}>
               <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>TOTAL COMPARED</div>
               <div style={{ fontSize: '1.6rem', fontWeight: '800' }}>{comparisonData.summary?.totalCompared || 0}</div>

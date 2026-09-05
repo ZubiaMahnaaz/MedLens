@@ -11,7 +11,9 @@ import {
   Search,
   ShieldCheck,
   UserCheck,
-  ChevronDown
+  ChevronDown,
+  Menu,
+  X
 } from 'lucide-react';
 
 export function Navbar({
@@ -25,20 +27,41 @@ export function Navbar({
   onSelectPatient,
   searchQuery,
   setSearchQuery,
-  pendingReviewCount = 0
+  pendingReviewCount = 0,
+  isMobileMenuOpen,
+  setIsMobileMenuOpen
 }) {
   const selectedPatient = patients.find(p => p.id === selectedPatientId);
 
   return (
     <header className="top-navbar">
-      {/* Search Input */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, maxWidth: '400px' }}>
-        <div style={{ position: 'relative', width: '100%' }}>
-          <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+      {/* Left side: Hamburger Toggle & Search */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
+        {/* Mobile Hamburger Menu Button */}
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setIsMobileMenuOpen && setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+          title="Open Menu"
+        >
+          <Menu size={20} />
+        </button>
+
+        {/* Mobile Brand (visible on small screens) */}
+        <div className="navbar-mobile-brand">
+          <div className="brand-icon" style={{ width: '28px', height: '28px' }}>
+            <Activity size={16} strokeWidth={2.5} />
+          </div>
+          <span className="brand-title" style={{ fontSize: '1rem' }}>MedLens</span>
+        </div>
+
+        {/* Search Input Container */}
+        <div className="nav-search-container" style={{ position: 'relative', width: '100%', maxWidth: '380px' }}>
+          <Search size={15} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
           <input
             type="text"
             className="form-input"
-            style={{ paddingLeft: '36px', height: '38px', fontSize: '0.85rem' }}
+            style={{ paddingLeft: '34px', height: '36px', fontSize: '0.84rem' }}
             placeholder="Search patients, tests, MRN..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -46,14 +69,14 @@ export function Navbar({
         </div>
       </div>
 
-      {/* Center / Right controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      {/* Right side controls */}
+      <div className="nav-controls-group" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
         {/* Active Patient Quick Switcher */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-input)', padding: '4px 10px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase' }}>Active Patient:</span>
+        <div className="nav-patient-switcher" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-input)', padding: '4px 8px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', maxWidth: '200px' }}>
+          <span className="nav-patient-label" style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase' }}>Patient:</span>
           <select
             className="form-select"
-            style={{ border: 'none', background: 'transparent', padding: '2px 8px', fontSize: '0.85rem', fontWeight: '600', color: 'var(--primary)', cursor: 'pointer', width: 'auto' }}
+            style={{ border: 'none', background: 'transparent', padding: '2px 4px', fontSize: '0.82rem', fontWeight: '600', color: 'var(--primary)', cursor: 'pointer', maxWidth: '140px', textOverflow: 'ellipsis' }}
             value={selectedPatientId || ''}
             onChange={(e) => onSelectPatient(e.target.value)}
           >
@@ -70,39 +93,41 @@ export function Navbar({
           className="btn btn-secondary btn-icon-only"
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          style={{ width: '34px', height: '34px', padding: '0', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          {theme === 'dark' ? <Sun size={17} color="#fbbf24" /> : <Moon size={17} color="#38bdf8" />}
+          {theme === 'dark' ? <Sun size={16} color="#fbbf24" /> : <Moon size={16} color="#38bdf8" />}
         </button>
 
         {/* Clinician Profile Selector */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingLeft: '12px', borderLeft: '1px solid var(--border-color)' }}>
+        <div className="nav-clinician-badge" style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingLeft: '8px', borderLeft: '1px solid var(--border-color)' }}>
           <div style={{
-            width: '34px',
-            height: '34px',
+            width: '32px',
+            height: '32px',
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #00d2b4, #0284c7)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontWeight: '700',
-            fontSize: '0.85rem',
-            color: '#090e1a'
+            fontSize: '0.8rem',
+            color: '#090e1a',
+            flexShrink: 0
           }}>
             {activeUser?.avatar_initials || 'MD'}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)' }}>
+          <div className="clinician-info-text" style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: '600', color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
               {activeUser?.full_name || 'Dr. Sarah Chen, MD'}
             </span>
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
+            <span style={{ fontSize: '0.68rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
               {activeUser?.role || 'Clinical Specialist'}
             </span>
           </div>
           {allUsers.length > 1 && (
             <select
               style={{
-                marginLeft: '4px',
-                padding: '4px',
+                marginLeft: '2px',
+                padding: '2px',
                 background: 'transparent',
                 border: 'none',
                 color: 'var(--text-muted)',
@@ -131,118 +156,146 @@ export function Sidebar({
   setActiveView,
   pendingCount = 0,
   selectedPatient,
-  hasActiveReport = false
+  hasActiveReport = false,
+  isMobileMenuOpen = false,
+  setIsMobileMenuOpen
 }) {
+  const handleNavClick = (view) => {
+    setActiveView(view);
+    if (setIsMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
-    <aside className="sidebar">
-      {/* Brand Header */}
-      <div className="brand-box">
-        <div className="brand-icon">
-          <Activity size={22} strokeWidth={2.5} />
-        </div>
-        <div>
-          <div className="brand-title">MedLens</div>
-          <div className="brand-sub">Clinical Intelligence</div>
-        </div>
-      </div>
+    <>
+      {/* Mobile Drawer Backdrop */}
+      <div
+        className={`sidebar-backdrop ${isMobileMenuOpen ? 'open' : ''}`}
+        onClick={() => setIsMobileMenuOpen && setIsMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
 
-      {/* Active Patient Card in Sidebar */}
-      {selectedPatient && (
+      <aside className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+        {/* Brand Header */}
+        <div className="brand-box">
+          <div className="brand-icon">
+            <Activity size={22} strokeWidth={2.5} />
+          </div>
+          <div>
+            <div className="brand-title">MedLens</div>
+            <div className="brand-sub">Clinical Intelligence</div>
+          </div>
+          {/* Mobile Drawer Close Button */}
+          <button
+            className="sidebar-close-btn"
+            onClick={() => setIsMobileMenuOpen && setIsMobileMenuOpen(false)}
+            aria-label="Close sidebar navigation"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Active Patient Card in Sidebar */}
+        {selectedPatient && (
+          <div style={{
+            margin: '14px 12px 6px 12px',
+            padding: '12px',
+            background: 'var(--bg-card)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-color)'
+          }}>
+            <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: '700', letterSpacing: '0.04em' }}>
+              Current Dossier
+            </div>
+            <div style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--text-primary)', marginTop: '2px' }}>
+              {selectedPatient.name}
+            </div>
+            <div style={{ display: 'flex', gap: '8px', fontSize: '0.74rem', color: 'var(--text-secondary)', marginTop: '4px', flexWrap: 'wrap' }}>
+              <span>{selectedPatient.identifier}</span>
+              <span>•</span>
+              <span>{selectedPatient.age} yrs ({selectedPatient.sex})</span>
+            </div>
+          </div>
+        )}
+
+        {/* Navigation Links */}
+        <nav className="nav-menu">
+          <div
+            className={`nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
+            onClick={() => handleNavClick('dashboard')}
+          >
+            <Activity size={18} />
+            <span>Dashboard</span>
+          </div>
+
+          <div
+            className={`nav-item ${activeView === 'patients' || activeView === 'patient-profile' ? 'active' : ''}`}
+            onClick={() => handleNavClick('patients')}
+          >
+            <Users size={18} />
+            <span>Patient Registry</span>
+          </div>
+
+          <div
+            className={`nav-item ${activeView === 'upload' ? 'active' : ''}`}
+            onClick={() => handleNavClick('upload')}
+          >
+            <FileText size={18} />
+            <span>Upload Lab Report</span>
+          </div>
+
+          <div
+            className={`nav-item ${activeView === 'review' ? 'active' : ''}`}
+            onClick={() => handleNavClick('review')}
+          >
+            <ShieldCheck size={18} />
+            <span>Structured Review</span>
+            {pendingCount > 0 && <span className="nav-badge alert">{pendingCount}</span>}
+          </div>
+
+          <div
+            className={`nav-item ${activeView === 'summary' ? 'active' : ''}`}
+            onClick={() => handleNavClick('summary')}
+          >
+            <Sparkles size={18} />
+            <span>AI Clinical Summary</span>
+          </div>
+
+          <div
+            className={`nav-item ${activeView === 'compare' ? 'active' : ''}`}
+            onClick={() => handleNavClick('compare')}
+          >
+            <GitCompare size={18} />
+            <span>Report Comparison</span>
+          </div>
+
+          <div
+            className={`nav-item ${activeView === 'timeline' ? 'active' : ''}`}
+            onClick={() => handleNavClick('timeline')}
+          >
+            <Clock size={18} />
+            <span>Patient Timeline</span>
+          </div>
+        </nav>
+
+        {/* Safety Compliance Footer */}
         <div style={{
-          margin: '14px 12px 6px 12px',
-          padding: '12px',
-          background: 'var(--bg-card)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-color)'
+          padding: '16px',
+          borderTop: '1px solid var(--border-color)',
+          fontSize: '0.7rem',
+          color: 'var(--text-muted)',
+          background: 'var(--bg-sidebar)',
+          marginTop: 'auto'
         }}>
-          <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: '700', letterSpacing: '0.04em' }}>
-            Current Dossier
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary)', fontWeight: '600', marginBottom: '4px' }}>
+            <ShieldCheck size={14} />
+            <span>Clinical Intelligence Engine</span>
           </div>
-          <div style={{ fontSize: '0.92rem', fontWeight: '700', color: 'var(--text-primary)', marginTop: '2px' }}>
-            {selectedPatient.name}
-          </div>
-          <div style={{ display: 'flex', gap: '8px', fontSize: '0.74rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-            <span>{selectedPatient.identifier}</span>
-            <span>•</span>
-            <span>{selectedPatient.age} yrs ({selectedPatient.sex})</span>
-          </div>
+          <div>Reference bounds strictly from report. Deterministic evaluation active.</div>
         </div>
-      )}
-
-      {/* Navigation Links */}
-      <nav className="nav-menu">
-        <div
-          className={`nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveView('dashboard')}
-        >
-          <Activity size={18} />
-          <span>Dashboard</span>
-        </div>
-
-        <div
-          className={`nav-item ${activeView === 'patients' || activeView === 'patient-profile' ? 'active' : ''}`}
-          onClick={() => setActiveView('patients')}
-        >
-          <Users size={18} />
-          <span>Patient Registry</span>
-        </div>
-
-        <div
-          className={`nav-item ${activeView === 'upload' ? 'active' : ''}`}
-          onClick={() => setActiveView('upload')}
-        >
-          <FileText size={18} />
-          <span>Upload Lab Report</span>
-        </div>
-
-        <div
-          className={`nav-item ${activeView === 'review' ? 'active' : ''}`}
-          onClick={() => setActiveView('review')}
-        >
-          <ShieldCheck size={18} />
-          <span>Structured Review</span>
-          {pendingCount > 0 && <span className="nav-badge alert">{pendingCount}</span>}
-        </div>
-
-        <div
-          className={`nav-item ${activeView === 'summary' ? 'active' : ''}`}
-          onClick={() => setActiveView('summary')}
-        >
-          <Sparkles size={18} />
-          <span>AI Clinical Summary</span>
-        </div>
-
-        <div
-          className={`nav-item ${activeView === 'compare' ? 'active' : ''}`}
-          onClick={() => setActiveView('compare')}
-        >
-          <GitCompare size={18} />
-          <span>Report Comparison</span>
-        </div>
-
-        <div
-          className={`nav-item ${activeView === 'timeline' ? 'active' : ''}`}
-          onClick={() => setActiveView('timeline')}
-        >
-          <Clock size={18} />
-          <span>Patient Timeline</span>
-        </div>
-      </nav>
-
-      {/* Safety Compliance Footer */}
-      <div style={{
-        padding: '16px',
-        borderTop: '1px solid var(--border-color)',
-        fontSize: '0.7rem',
-        color: 'var(--text-muted)',
-        background: 'var(--bg-sidebar)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary)', fontWeight: '600', marginBottom: '4px' }}>
-          <ShieldCheck size={14} />
-          <span>Clinical Intelligence Engine</span>
-        </div>
-        <div>Reference bounds strictly from report. Deterministic evaluation active.</div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }
+
