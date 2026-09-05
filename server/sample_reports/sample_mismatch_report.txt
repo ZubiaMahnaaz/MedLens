@@ -1,0 +1,10 @@
+VALLEY HEALTH DIAGNOSTICS
+Report Date: 2026-09-01
+Patient Name: Jonathan Vance
+DOB: 1980-12-05
+Panel: Lipid Profile
+
+Total Cholesterol: 240 mg/dL (Reference Range: < 200 mg/dL)
+HDL Cholesterol (High-Density): 38 mg/dL (Reference Range: > 50 mg/dL)
+LDL Cholesterol (Calculated/Direct): 162 mg/dL (Reference Range: < 100 mg/dL)
+Triglycerides: 200 mg/dL (Reference Range: < 150 mg/dL)

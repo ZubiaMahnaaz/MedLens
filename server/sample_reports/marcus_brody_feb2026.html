@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complete Blood Count (CBC) & Lipid Panel - Marcus Brody</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 24px; background: #ffffff; color: #1e293b; font-size: 13px; line-height: 1.4; }
+    .header { border-bottom: 2px solid #3b82f6; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; }
+    .lab-title { font-size: 18px; font-weight: bold; color: #1d4ed8; text-transform: uppercase; letter-spacing: 0.5px; }
+    .lab-sub { font-size: 11px; color: #64748b; margin-top: 2px; }
+    .report-badge { background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 12px; }
+    .patient-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .patient-box div { font-size: 12px; }
+    .patient-box strong { color: #334155; display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th { background: #f1f5f9; color: #475569; text-align: left; padding: 8px 10px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; }
+    td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
+    .flag-badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: bold; }
+    .flag-high { background: #fee2e2; color: #b91c1c; }
+    .flag-low { background: #fef3c7; color: #b45309; }
+    .normal { color: #16a34a; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="lab-title">BioCare Regional Diagnostic Systems</div>
+      <div class="lab-sub">CLIA # 05D2119934 | Hematology & Pathology Division</div>
+    </div>
+    <div>
+      <span class="report-badge">FINAL REPORT</span>
+    </div>
+  </div>
+
+  <div class="patient-box">
+    <div><strong>Patient Name</strong> Marcus Brody</div>
+    <div><strong>Patient ID</strong> PT-2026-1042</div>
+    <div><strong>Date of Birth</strong> 1984-11-23 (Age: 41)</div>
+    <div><strong>Sex</strong> Male</div>
+    <div><strong>Ordering Physician</strong> Dr. Sarah Chen, MD</div>
+    <div><strong>Collection Date</strong> 2026-02-10 09:15 AM</div>
+    <div><strong>Report Date</strong> 2026-02-10 04:30 PM</div>
+    <div><strong>Accession #</strong> ACC-2026-9901</div>
+  </div>
+
+  <h3 style="margin: 12px 0 6px 0; color: #0f172a; font-size: 14px;">Complete Blood Count (CBC) & Lipid Assessment</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Test Description</th>
+        <th>Result</th>
+        <th>Unit</th>
+        <th>Reference Interval</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>White Blood Cell Count (WBC)</strong></td>
+        <td>6.4</td>
+        <td>10^3/uL</td>
+        <td>4.5 - 11.0</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Red Blood Cell Count (RBC)</strong></td>
+        <td>4.85</td>
+        <td>10^6/uL</td>
+        <td>4.30 - 5.90</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Hemoglobin (Hb)</strong></td>
+        <td>15.2</td>
+        <td>g/dL</td>
+        <td>13.5 - 17.5</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Hematocrit (Hct)</strong></td>
+        <td>44.8</td>
+        <td>%</td>
+        <td>41.0 - 50.0</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Platelet Count</strong></td>
+        <td>245</td>
+        <td>10^3/uL</td>
+        <td>150 - 450</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Total Cholesterol</strong></td>
+        <td>214</td>
+        <td>mg/dL</td>
+        <td>&lt; 200</td>
+        <td><span class="flag-badge flag-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>HDL Cholesterol (High-Density)</strong></td>
+        <td>44</td>
+        <td>mg/dL</td>
+        <td>&gt; 40</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>LDL Cholesterol (Calculated/Direct)</strong></td>
+        <td>138</td>
+        <td>mg/dL</td>
+        <td>&lt; 100</td>
+        <td><span class="flag-badge flag-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Triglycerides</strong></td>
+        <td>160</td>
+        <td>mg/dL</td>
+        <td>&lt; 150</td>
+        <td><span class="flag-badge flag-high">HIGH</span></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

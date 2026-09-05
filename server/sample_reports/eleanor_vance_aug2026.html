@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clinical Laboratory Report - Eleanor Vance - Aug 2026</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 24px; background: #ffffff; color: #1e293b; font-size: 13px; line-height: 1.4; }
+    .header { border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; }
+    .lab-title { font-size: 18px; font-weight: bold; color: #0369a1; text-transform: uppercase; letter-spacing: 0.5px; }
+    .lab-sub { font-size: 11px; color: #64748b; margin-top: 2px; }
+    .report-badge { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 12px; }
+    .patient-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .patient-box div { font-size: 12px; }
+    .patient-box strong { color: #334155; display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th { background: #f1f5f9; color: #475569; text-align: left; padding: 8px 10px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; }
+    td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; font-size: 12px; }
+    tr:nth-child(even) { background-color: #fafafa; }
+    .high { color: #dc2626; font-weight: bold; }
+    .low { color: #d97706; font-weight: bold; }
+    .normal { color: #16a34a; }
+    .flag-badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: bold; }
+    .flag-high { background: #fee2e2; color: #b91c1c; }
+    .flag-low { background: #fef3c7; color: #b45309; }
+    .footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #e2e8f0; font-size: 10px; color: #94a3b8; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="lab-title">MetroHealth Diagnostics Center</div>
+      <div class="lab-sub">CLIA # 99D0876543 | 450 Medical Arts Plaza, Suite 300 | Accredited Laboratory</div>
+    </div>
+    <div>
+      <span class="report-badge">FINAL LAB REPORT</span>
+    </div>
+  </div>
+
+  <div class="patient-box">
+    <div><strong>Patient Name</strong> Eleanor Vance</div>
+    <div><strong>Patient ID / MRN</strong> PT-2026-0819</div>
+    <div><strong>Date of Birth</strong> 1968-04-12 (Age: 58)</div>
+    <div><strong>Gender</strong> Female</div>
+    <div><strong>Ordering Physician</strong> Dr. Sarah Chen, MD</div>
+    <div><strong>Specimen Collected</strong> 2026-08-28 07:45 AM</div>
+    <div><strong>Report Printed</strong> 2026-08-28 02:15 PM</div>
+    <div><strong>Specimen ID</strong> SPEC-88912-A</div>
+  </div>
+
+  <h3 style="margin: 12px 0 6px 0; color: #0f172a; font-size: 14px;">Comprehensive Metabolic & Lipid Follow-up Panel</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Test Name</th>
+        <th>Result</th>
+        <th>Units</th>
+        <th>Reference Interval</th>
+        <th>Flag</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fasting Blood Glucose</strong></td>
+        <td>126</td>
+        <td>mg/dL</td>
+        <td>70 - 99</td>
+        <td><span class="flag-badge flag-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Hemoglobin A1c (HbA1c)</strong></td>
+        <td>6.8</td>
+        <td>%</td>
+        <td>4.0 - 5.6</td>
+        <td><span class="flag-badge flag-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Total Cholesterol</strong></td>
+        <td>208</td>
+        <td>mg/dL</td>
+        <td>&lt; 200</td>
+        <td><span class="flag-badge flag-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>HDL Cholesterol (High-Density)</strong></td>
+        <td>48</td>
+        <td>mg/dL</td>
+        <td>&gt; 50</td>
+        <td><span class="flag-badge flag-low">LOW</span></td>
+      </tr>
+      <tr>
+        <td><strong>LDL Cholesterol (Calculated/Direct)</strong></td>
+        <td>130</td>
+        <td>mg/dL</td>
+        <td>&lt; 100</td>
+        <td><span class="flag-badge flag-high">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Triglycerides</strong></td>
+        <td>150</td>
+        <td>mg/dL</td>
+        <td>&lt; 150</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Serum Creatinine</strong></td>
+        <td>0.88</td>
+        <td>mg/dL</td>
+        <td>0.5 - 1.1</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Blood Urea Nitrogen (BUN)</strong></td>
+        <td>15</td>
+        <td>mg/dL</td>
+        <td>7 - 20</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Estimated GFR (eGFR)</strong></td>
+        <td>84</td>
+        <td>mL/min/1.73m2</td>
+        <td>&gt; 60</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Sodium (Na)</strong></td>
+        <td>140</td>
+        <td>mmol/L</td>
+        <td>135 - 145</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+      <tr>
+        <td><strong>Potassium (K)</strong></td>
+        <td>4.3</td>
+        <td>mmol/L</td>
+        <td>3.5 - 5.1</td>
+        <td><span class="normal">NORMAL</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <span>Verified by Medical Laboratory Technologist: R. Jenkins, MLS(ASCP)</span>
+    <span>Page 1 of 1 | Electronic Signature Authorized</span>
+  </div>
+</body>
+</html>

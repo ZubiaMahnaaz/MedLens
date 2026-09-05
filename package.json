@@ -1,0 +1,14 @@
+{
+  "name": "medlens-app",
+  "version": "1.0.0",
+  "description": "MedLens — AI-Powered Clinical Information Intelligence Full-Stack Web Application",
+  "scripts": {
+    "build": "npm --prefix client run build",
+    "start": "node server/src/index.js",
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "server": "node server/src/index.js",
+    "client": "npm --prefix client run dev",
+    "test:backend": "node server/test_e2e.js"
+  }
+}
+

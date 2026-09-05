@@ -1,0 +1,13 @@
+APEX ENDOCRINE PATHOLOGY LABS
+Report Date: 2026-08-30
+Patient Name: Sophia Lin
+DOB: 1992-07-19
+Gender: Female
+Panel: Comprehensive Thyroid Function Profile
+
+RESULTS:
+Thyroid Stimulating Hormone (TSH): 5.20 uIU/mL (Reference Range: 0.40 - 4.00 uIU/mL)
+Free Thyroxine (Free T4): 0.72 ng/dL (Reference Range: 0.80 - 1.80 ng/dL)
+Free Triiodothyronine (Free T3): 2.4 pg/mL (Reference Range: 2.3 - 4.2 pg/mL)
+
+Notes: Specimen collected fasting at 08:00 AM.

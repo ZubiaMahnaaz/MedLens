@@ -1,0 +1,24 @@
+CENTRAL HEALTH CLINICAL LABORATORIES
+CLIA ID: 88D1049281
+Date of Report: 2026-09-02
+Patient Name: Eleanor Vance
+DOB: 1968-04-12
+Ordering Physician: Dr. Sarah Chen, MD
+Specimen: Fasting Serum Blood
+
+LABORATORY RESULTS:
+Fasting Blood Glucose: 118 mg/dL (Reference Range: 70 - 99 mg/dL)
+Hemoglobin A1c (HbA1c): 6.5 % (Reference Range: 4.0 - 5.6 %)
+Total Cholesterol: 195 mg/dL (Reference Range: < 200 mg/dL)
+HDL Cholesterol (High-Density): 52 mg/dL (Reference Range: > 50 mg/dL)
+LDL Cholesterol (Calculated/Direct): 112 mg/dL (Reference Range: < 100 mg/dL)
+Triglycerides: 140 mg/dL (Reference Range: < 150 mg/dL)
+Serum Creatinine: 0.85 mg/dL (Reference Range: 0.5 - 1.1 mg/dL)
+Blood Urea Nitrogen (BUN): 14 mg/dL (Reference Range: 7 - 20 mg/dL)
+Estimated GFR (eGFR): 86 mL/min/1.73m2 (Reference Range: > 60 mL/min/1.73m2)
+Sodium (Na): 141 mmol/L (Reference Range: 135 - 145 mmol/L)
+Potassium (K): 4.2 mmol/L (Reference Range: 3.5 - 5.1 mmol/L)
+Alanine Aminotransferase (ALT/SGPT): 24 U/L (Reference Range: 7 - 56 U/L)
+Aspartate Aminotransferase (AST/SGOT): 22 U/L (Reference Range: 10 - 40 U/L)
+
+End of Report. Electronic Verification Signature: Dr. R. Patel, MD.
