@@ -13,11 +13,25 @@ import { logAuditEvent } from '../services/auditService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const UPLOADS_DIR = path.join(__dirname, '..', '..', 'uploads');
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const UPLOADS_DIR = isServerless ? '/tmp/medlens_uploads' : path.join(__dirname, '..', '..', 'uploads');
 const SAMPLE_DIR = path.join(__dirname, '..', '..', 'sample_reports');
+
+try {
+  if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('UPLOADS_DIR setup notice:', e.message);
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    try {
+      if (!fs.existsSync(UPLOADS_DIR)) {
+        fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+      }
+    } catch {}
     cb(null, UPLOADS_DIR);
   },
   filename: function (req, file, cb) {

@@ -6,44 +6,87 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const DB_FILE = path.join(DATA_DIR, 'medlens.sqlite');
-const UPLOADS_DIR = path.join(__dirname, '..', 'uploads');
+// Detect serverless environment (Vercel, AWS Lambda)
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+const BUNDLED_DATA_DIR = path.join(__dirname, '..', 'data');
+const BUNDLED_DB_FILE = path.join(BUNDLED_DATA_DIR, 'medlens.sqlite');
+
+const DATA_DIR = isServerless ? '/tmp/medlens_data' : BUNDLED_DATA_DIR;
+const DB_FILE = path.join(DATA_DIR, 'medlens.sqlite');
+const UPLOADS_DIR = isServerless ? '/tmp/medlens_uploads' : path.join(__dirname, '..', 'uploads');
+
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('DATA_DIR creation notice:', e.message);
 }
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+try {
+  if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn('UPLOADS_DIR creation notice:', e.message);
 }
 
 let dbInstance = null;
 let SQL = null;
+let initPromise = null;
 
 export async function initDatabase() {
   if (dbInstance) return dbInstance;
+  if (initPromise) return initPromise;
 
-  SQL = await initSqlJs();
+  initPromise = (async () => {
+    try {
+      if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      }
+    } catch {
+      // Ignored if directory cannot be created on read-only FS
+    }
 
-  if (fs.existsSync(DB_FILE)) {
-    const fileBuffer = fs.readFileSync(DB_FILE);
-    dbInstance = new SQL.Database(fileBuffer);
-  } else {
-    dbInstance = new SQL.Database();
-  }
+    SQL = await initSqlJs();
 
-  // Create tables
-  createTables();
-  saveDatabase();
+    // Check if writable DB already exists
+    if (fs.existsSync(DB_FILE)) {
+      const fileBuffer = fs.readFileSync(DB_FILE);
+      dbInstance = new SQL.Database(fileBuffer);
+    } else if (fs.existsSync(BUNDLED_DB_FILE)) {
+      // Load pre-populated bundled SQLite file
+      const fileBuffer = fs.readFileSync(BUNDLED_DB_FILE);
+      dbInstance = new SQL.Database(fileBuffer);
+      saveDatabase();
+    } else {
+      // Initialize fresh in-memory SQLite database
+      dbInstance = new SQL.Database();
+    }
 
-  return dbInstance;
+    // Create tables if not exist and save
+    createTables();
+    saveDatabase();
+
+    return dbInstance;
+  })();
+
+  return initPromise;
 }
 
 export function saveDatabase() {
   if (!dbInstance) return;
-  const data = dbInstance.export();
-  const buffer = Buffer.from(data);
-  fs.writeFileSync(DB_FILE, buffer);
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    const data = dbInstance.export();
+    const buffer = Buffer.from(data);
+    fs.writeFileSync(DB_FILE, buffer);
+  } catch (err) {
+    console.warn('Could not persist database to disk:', err.message);
+  }
 }
 
 function createTables() {

@@ -1,17 +1,43 @@
 const API_BASE = '/api';
 
 export async function fetchJson(url, options = {}) {
-  const res = await fetch(`${API_BASE}${url}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers
-    },
-    ...options
-  });
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${url}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+      },
+      ...options
+    });
+  } catch (netErr) {
+    throw new Error(`Network error: ${netErr.message || 'Failed to connect to API server'}`);
+  }
 
-  const data = await res.json();
+  const contentType = res.headers.get('content-type') || '';
+  let data;
+
+  if (contentType.includes('application/json')) {
+    try {
+      data = await res.json();
+    } catch (parseErr) {
+      throw new Error(`Invalid JSON response from server (${res.status}): ${parseErr.message}`);
+    }
+  } else {
+    const text = await res.text();
+    if (!res.ok) {
+      // Return clear message if serverless function or route returned HTML error
+      throw new Error(`Server returned status ${res.status}: ${text.slice(0, 120).trim() || res.statusText}`);
+    }
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(`Expected JSON but received non-JSON response from ${url}`);
+    }
+  }
+
   if (!res.ok) {
-    throw new Error(data.error || `HTTP error ${res.status}`);
+    throw new Error(data?.error || `HTTP error ${res.status}`);
   }
   return data;
 }
@@ -48,12 +74,38 @@ export const api = {
   getReport: (id) => fetchJson(`/reports/${id}`),
   uploadReport: async (formData) => {
     // Note: for multipart/form-data, do not set Content-Type header so browser sets boundary
-    const res = await fetch(`${API_BASE}/reports/upload`, {
-      method: 'POST',
-      body: formData
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Upload failed');
+    let res;
+    try {
+      res = await fetch(`${API_BASE}/reports/upload`, {
+        method: 'POST',
+        body: formData
+      });
+    } catch (netErr) {
+      throw new Error(`Upload network error: ${netErr.message || 'Failed to upload report'}`);
+    }
+
+    const contentType = res.headers.get('content-type') || '';
+    let data;
+
+    if (contentType.includes('application/json')) {
+      try {
+        data = await res.json();
+      } catch (parseErr) {
+        throw new Error(`Invalid JSON response from upload endpoint (${res.status}): ${parseErr.message}`);
+      }
+    } else {
+      const text = await res.text();
+      if (!res.ok) {
+        throw new Error(`Upload failed with status ${res.status}: ${text.slice(0, 120).trim() || res.statusText}`);
+      }
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error('Upload returned unexpected non-JSON response');
+      }
+    }
+
+    if (!res.ok) throw new Error(data?.error || 'Upload failed');
     return data;
   },
   uploadSampleReport: (payload) => fetchJson('/reports/upload', {
