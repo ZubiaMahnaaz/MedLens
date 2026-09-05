@@ -39,7 +39,11 @@ async function ensureDbInitialized() {
   if (!dbInitPromise) {
     dbInitPromise = (async () => {
       await initDatabase();
-      seedInitialData();
+      try {
+        seedInitialData();
+      } catch (seedErr) {
+        console.warn('Seed data warning (non-fatal):', seedErr.message);
+      }
       dbInitialized = true;
     })();
   }
@@ -52,7 +56,11 @@ app.use(async (req, res, next) => {
     next();
   } catch (err) {
     console.error('Database initialization error:', err);
-    res.status(500).json({ error: 'Database initialization error', details: err.message });
+    res.status(500).json({
+      error: 'Database initialization error',
+      details: err.message || String(err),
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   }
 });
 

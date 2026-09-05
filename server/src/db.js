@@ -2,7 +2,9 @@ import initSqlJs from 'sql.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 
+const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -36,6 +38,41 @@ let dbInstance = null;
 let SQL = null;
 let initPromise = null;
 
+/**
+ * Locate sql-wasm.wasm binary across local, bundled, and serverless runtime directories
+ */
+function findWasmBinary() {
+  const candidatePaths = [];
+
+  // 1. Node module resolution
+  try {
+    const resolved = require.resolve('sql.js/dist/sql-wasm.wasm');
+    if (resolved) candidatePaths.push(resolved);
+  } catch {}
+
+  // 2. Relative from current directory and project root
+  candidatePaths.push(
+    path.join(__dirname, '..', '..', 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+    path.join(__dirname, '..', 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+    path.join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+    path.join(process.cwd(), 'sql-wasm.wasm'),
+    path.join(__dirname, 'sql-wasm.wasm')
+  );
+
+  for (const p of candidatePaths) {
+    try {
+      if (fs.existsSync(p)) {
+        return {
+          path: p,
+          binary: fs.readFileSync(p)
+        };
+      }
+    } catch {}
+  }
+
+  return null;
+}
+
 export async function initDatabase() {
   if (dbInstance) return dbInstance;
   if (initPromise) return initPromise;
@@ -45,27 +82,58 @@ export async function initDatabase() {
       if (!fs.existsSync(DATA_DIR)) {
         fs.mkdirSync(DATA_DIR, { recursive: true });
       }
-    } catch {
-      // Ignored if directory cannot be created on read-only FS
+    } catch {}
+
+    // Initialize WebAssembly engine with local binary or locateFile
+    const wasmInfo = findWasmBinary();
+    if (wasmInfo) {
+      SQL = await initSqlJs({
+        wasmBinary: wasmInfo.binary,
+        locateFile: () => wasmInfo.path
+      });
+    } else {
+      SQL = await initSqlJs({
+        locateFile: (file) => `https://sql.js.org/dist/${file}`
+      });
     }
 
-    SQL = await initSqlJs();
+    let loaded = false;
 
-    // Check if writable DB already exists
-    if (fs.existsSync(DB_FILE)) {
-      const fileBuffer = fs.readFileSync(DB_FILE);
-      dbInstance = new SQL.Database(fileBuffer);
-    } else if (fs.existsSync(BUNDLED_DB_FILE)) {
-      // Load pre-populated bundled SQLite file
-      const fileBuffer = fs.readFileSync(BUNDLED_DB_FILE);
-      dbInstance = new SQL.Database(fileBuffer);
-      saveDatabase();
-    } else {
-      // Initialize fresh in-memory SQLite database
+    // 1. Check if database already exists in writable DATA_DIR (/tmp on Vercel)
+    try {
+      if (fs.existsSync(DB_FILE)) {
+        const fileBuffer = fs.readFileSync(DB_FILE);
+        if (fileBuffer.length > 0) {
+          dbInstance = new SQL.Database(fileBuffer);
+          loaded = true;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not read existing DB_FILE:', err.message);
+    }
+
+    // 2. Fallback to bundled pre-populated SQLite file
+    if (!loaded) {
+      try {
+        if (fs.existsSync(BUNDLED_DB_FILE)) {
+          const fileBuffer = fs.readFileSync(BUNDLED_DB_FILE);
+          if (fileBuffer.length > 0) {
+            dbInstance = new SQL.Database(fileBuffer);
+            loaded = true;
+            saveDatabase();
+          }
+        }
+      } catch (err) {
+        console.warn('Could not load BUNDLED_DB_FILE:', err.message);
+      }
+    }
+
+    // 3. Fallback to in-memory SQLite database
+    if (!loaded) {
       dbInstance = new SQL.Database();
     }
 
-    // Create tables if not exist and save
+    // Ensure schema tables exist
     createTables();
     saveDatabase();
 
